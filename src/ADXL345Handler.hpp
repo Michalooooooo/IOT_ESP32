@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdint.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL345_U.h>
@@ -13,7 +14,6 @@ public:
     void DisplayCurrentAccelerations();
 private:
     inline void Init();
-
 
     uint32_t m_Id;
     uint8_t m_SDAPin, m_SCLPin;
