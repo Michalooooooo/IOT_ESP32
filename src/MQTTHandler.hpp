@@ -8,21 +8,23 @@
 
 class MQTTHandler {
 public:
-    MQTTHandler(char* ssid, char* password, char* mqtt_server, const SubTopic** topics_list, uint8_t len);
+    MQTTHandler(char* ssid, char* password, char* mqtt_server, SubTopic* topics_list[], uint8_t len);
 
     void Setup();
+    void Reconnect();
+    void Loop();
 private:
     void SetupWiFi();
-    void Reconnect();
-    void Callback(char* topic, byte* payload, unsigned int length);
-    void HandleTopic(char* topic);
+    
+    void HandleTopic(char* topic, byte* payload, unsigned int length);
     void SubscribeTopics();
 
     char* m_SSID;
     char* m_Password;
     char* m_MQTTServer;
-    const SubTopic** m_SubTopicsList;
     uint8_t m_Len;
+    SubTopic** m_SubTopicsList;
+
 
     WiFiClient m_ESP32Client;
     PubSubClient client;

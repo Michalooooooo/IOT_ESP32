@@ -13,6 +13,6 @@ m_Function(cb) {
     }
 }
 
-inline void SubTopic::CallFunction() const {
+void SubTopic::CallFunction() const {
     m_Function();
 }

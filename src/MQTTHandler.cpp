@@ -1,6 +1,6 @@
 #include "MQTTHandler.hpp"
 
-MQTTHandler::MQTTHandler(char *ssid, char *password, char *mqtt_server, const SubTopic** topics_list, uint8_t len):
+MQTTHandler::MQTTHandler(char* ssid, char* password, char* mqtt_server, SubTopic* topics_list[], uint8_t len):
 client(m_ESP32Client),
 m_SSID(ssid),
 m_Password(password),
@@ -9,10 +9,11 @@ m_SubTopicsList(topics_list),
 m_Len(len) {}
 
 void MQTTHandler::Setup() {
-    Serial.begin(9600);
     SetupWiFi();
     client.setServer(m_MQTTServer, 1883);
-    // client.setCallback(Callback); // TODO
+    client.setCallback([this](char* topic, byte* payload, unsigned int length) {
+        this->HandleTopic(topic, payload, length);
+    }); 
 }
 
 void MQTTHandler::SetupWiFi() {
@@ -21,7 +22,7 @@ void MQTTHandler::SetupWiFi() {
     Serial.print("Connecting ");
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
-        Serial.print(" . ");
+        Serial.println("Trying to connect... ");
     }
     Serial.println("\n WiFi connected!");
 }
@@ -30,33 +31,33 @@ void MQTTHandler::SetupWiFi() {
 void MQTTHandler::Reconnect() {
 
     while(!client.connected()) {
-        Serial.print("Connecting to MQTT...");
+        // Serial.print("MQTTHandler::Reconnect | Brak polaczenia, ponowne łaczenie...");
 
         if(client.connect("ESP32Client")) {
-            Serial.println("ESP32 connected");
+            Serial.println("MQTTHandler::Reconnect | ESP32 connected");
 
-            // TODO można zrobić więcej topiców przez użycie petli for ! ! !
-            client.subscribe("/motor/1/control");
+            SubscribeTopics();
         } else {
-            Serial.print("Failed to connect ESP32! -> ");
-            Serial.print(client.state());
+            // Serial.print("MQTTHandler::Reconnect | Nie mozna sie polaczyc z ESP32: ");
+            // Serial.print(client.state());
             delay(2000);
         }
     }
 }
 
-void MQTTHandler::Callback(char* topic, byte* payload, unsigned int length) {
+void MQTTHandler::Loop() {
+    client.loop();
+}
+
+void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
 
     String message;
 
     for (size_t i = 0; i < length; i++) {
         message += (char)(payload[i]);
     }
-
-    HandleTopic(topic);
-}
-
-void MQTTHandler::HandleTopic(char* topic) {
+    // Serial.print("MQTTHandler::HandleTopic | ");
+    Serial.println(message);
 
     for(size_t i = 0; i < m_Len; i++) {
         const SubTopic *t = m_SubTopicsList[i];
