@@ -13,6 +13,8 @@ public:
     void Setup();
     void Reconnect();
     void Loop();
+    // Mozna zrobić funkcje do dodawania SubTopics zamiast dodawania ich w konstruktorze.
+    void Publish(char* topic, char* message);
 private:
     void SetupWiFi();
     

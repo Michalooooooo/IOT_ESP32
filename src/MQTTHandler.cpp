@@ -49,6 +49,10 @@ void MQTTHandler::Loop() {
     client.loop();
 }
 
+void MQTTHandler::Publish(char* topic, char* message) {
+    client.publish(topic, message);
+}
+
 void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
 
     String message;
