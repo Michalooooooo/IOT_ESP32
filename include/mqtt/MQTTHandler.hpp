@@ -8,13 +8,14 @@
 
 class MQTTHandler {
 public:
-    MQTTHandler(char* ssid, char* password, char* mqtt_server, SubTopic* topics_list[], uint8_t len);
+    MQTTHandler(char* ssid, char* password, char* mqtt_server);
 
-    void Setup();
+    void Init();
     void Reconnect();
     void Loop();
     // Mozna zrobić funkcje do dodawania SubTopics zamiast dodawania ich w konstruktorze.
     void Publish(char* topic, char* message);
+    void AddSubTopic(SubTopic* sub_topic);
 private:
     void SetupWiFi();
     
@@ -24,8 +25,8 @@ private:
     char* m_SSID;
     char* m_Password;
     char* m_MQTTServer;
-    uint8_t m_Len;
-    SubTopic** m_SubTopicsList;
+    SubTopic* m_SubTopicsList[10];
+    uint8_t m_Itr;
 
 
     WiFiClient m_ESP32Client;

@@ -1,14 +1,14 @@
 #include "MQTTHandler.hpp"
 
-MQTTHandler::MQTTHandler(char* ssid, char* password, char* mqtt_server, SubTopic* topics_list[], uint8_t len):
+MQTTHandler::MQTTHandler(char* ssid, char* password, char* mqtt_server):
 client(m_ESP32Client),
 m_SSID(ssid),
 m_Password(password),
 m_MQTTServer(mqtt_server),
-m_SubTopicsList(topics_list),
-m_Len(len) {}
+m_Itr(0)
+{}
 
-void MQTTHandler::Setup() {
+void MQTTHandler::Init() {
     SetupWiFi();
     client.setServer(m_MQTTServer, 1883);
     client.setCallback([this](char* topic, byte* payload, unsigned int length) {
@@ -31,15 +31,11 @@ void MQTTHandler::SetupWiFi() {
 void MQTTHandler::Reconnect() {
 
     while(!client.connected()) {
-        // Serial.print("MQTTHandler::Reconnect | Brak polaczenia, ponowne łaczenie...");
 
         if(client.connect("ESP32Client")) {
             Serial.println("MQTTHandler::Reconnect | ESP32 connected");
-
             SubscribeTopics();
         } else {
-            // Serial.print("MQTTHandler::Reconnect | Nie mozna sie polaczyc z ESP32: ");
-            // Serial.print(client.state());
             delay(2000);
         }
     }
@@ -50,7 +46,29 @@ void MQTTHandler::Loop() {
 }
 
 void MQTTHandler::Publish(char* topic, char* message) {
+
     client.publish(topic, message);
+}
+
+void MQTTHandler::AddSubTopic(SubTopic *sub_topic) {
+    // Sprawdzenie czy długosc po dodaniu nie przekroczy maksymalnej długości (10)
+    if (m_Itr > 9) {
+        Serial.println("Nie mozna dodac topika! Zbyt mala tablica topikow!");
+        return;
+    }
+
+    // Sprawdzenie czy już nie ma takiego topika
+    for(size_t i = 0; i < m_Itr; i++) {
+        SubTopic* topic = m_SubTopicsList[i];
+        if(topic->m_ID == sub_topic->m_ID) {
+            Serial.println("Nie mozna dodac topika! Taki topik juz istnieje!");
+            return;
+        }
+    }
+
+    // Dodanie topika
+    m_SubTopicsList[m_Itr] = sub_topic;
+    m_Itr++;
 }
 
 void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
@@ -63,7 +81,7 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
     // Serial.print("MQTTHandler::HandleTopic | ");
     Serial.println(message);
 
-    for(size_t i = 0; i < m_Len; i++) {
+    for(size_t i = 0; i < m_Itr; i++) {
         const SubTopic *t = m_SubTopicsList[i];
         if(strcmp(topic, t->m_TopicName) == 0) {
             t->CallFunction();
@@ -72,7 +90,7 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
 }
 
 void MQTTHandler::SubscribeTopics() {
-    for(size_t i = 0; i < m_Len; i++) {
+    for(size_t i = 0; i < m_Itr; i++) {
         const SubTopic *t = m_SubTopicsList[i];
         client.subscribe(t->m_TopicName);
     }
