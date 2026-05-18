@@ -5,6 +5,7 @@
 #include "SystemState.hpp"
 #include "screens/Screen.hpp"
 #include "screens/HomeScreen.hpp"
+#include <Arduino.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64

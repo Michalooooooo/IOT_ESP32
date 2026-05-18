@@ -29,6 +29,7 @@ void OLEDHandler::UpdateScreen() {
             break;
 
         default:
+            Serial.println("OLEDHandler::UpdateScreen(): Active screen out of range!");
             break;
     }
 }
