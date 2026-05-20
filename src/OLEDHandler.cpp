@@ -6,7 +6,9 @@ OLEDHandler::OLEDHandler(uint8_t& SDA, uint8_t& SCL, const SystemState& sys_stat
     m_SystemState(sys_state),
     m_HomeScreen(m_Display),
     m_ActiveScreen(0),
-    m_NumScreens(5) {}
+    m_NumScreens(5),
+    m_NextButton(BUTTON_NO, 12, [this]() { SetNextScreen(); }, nullptr),
+    m_PreviousButton(BUTTON_NO, 13, [this]() { SetPreviousScreen(); }, nullptr) {}
 
 void OLEDHandler::Init() {
     Wire.begin(m_SDA, m_SCL);
@@ -19,6 +21,9 @@ void OLEDHandler::Init() {
 }
 
 void OLEDHandler::UpdateScreen() {
+    m_NextButton.Update();
+    m_PreviousButton.Update();
+    
     switch (m_ActiveScreen) {
         case 0:
             m_HomeScreen.Update();

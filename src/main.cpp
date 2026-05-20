@@ -10,15 +10,20 @@
 // SSD1306Handler oled = SSD1306Handler(21, 22);
 #include "Button.hpp"
 #include <Arduino.h>
+#include <stdint.h>
 
-void* on_click() { Serial.println("Wcisnieto przycisk!"); }
-void* on_release() { Serial.println("Puszczono przycisk!"); }
+uint8_t ctr = 0;
 
-Button b1(BUTTON_NO, 14, on_click, on_release);
+
+void on_click() { Serial.printf("%u Wcisnieto przycisk! \n", ctr); ctr++; }
+void on_release() { Serial.printf("%u Puszczono przycisk! \n", ctr); ctr++; }
+
+Button b1(BUTTON_NO, 32, on_click, on_release);
 
 void setup() {
 
-  Serial.begin(460800);
+  Serial.begin(115200);
+  Serial.println("START");
 
 }
 
