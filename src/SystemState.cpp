@@ -6,15 +6,15 @@ SystemState::SystemState():
     m_CurrentIlluminance(0) {}
 
     // Sensors
-void SystemState::SetTemperature(float& t) {
+void SystemState::SetTemperature(float t) {
     m_CurrentTemperature = t;
 }
 
-void SystemState::SetHumidity(float& h) {
+void SystemState::SetHumidity(float h) {
     m_CurrentHumidity = h;
 }
 
-void SystemState::SetIlluminance(uint16_t& lux) {
+void SystemState::SetIlluminance(uint16_t lux) {
     m_CurrentIlluminance = lux;
 }
 
@@ -30,7 +30,7 @@ int16_t SystemState::GetIlluminance() const {
     return m_CurrentIlluminance;
 }
 
-void SystemState::SetTime(SysTime &time) {
+void SystemState::SetTime(SysTime time) {
     m_CurrentTime = time;
 }
 
@@ -38,10 +38,42 @@ SysTime SystemState::GetTime() const {
     return m_CurrentTime;
 }
 
-void SystemState::SetWiFiStatus(bool &status) {
+void SystemState::SetWiFiStatus(bool status) {
     m_WiFiStatus = status;
 }
 
 bool SystemState::GetWiFiStatus() const {
     return m_WiFiStatus;
+}
+
+void SystemState::SetFanPower(float power) {
+    m_FanPower = power;
+}
+
+void SystemState::SetLedPower(float power) {
+    m_LedPower = power;
+}
+
+void SystemState::SetPumpPower(float power) {
+    m_PumpPower = power;
+}
+
+void SystemState::SetHeatPower(float power) {
+    m_HeatPower = power;
+}
+
+float SystemState::GetFanPower() const {
+    return m_FanPower;
+}
+
+float SystemState::GetLedPower() const {
+    return m_LedPower;
+}
+
+float SystemState::GetPumpPower() const {
+    return m_PumpPower;
+}
+
+float SystemState::GetHeatPower() const {
+    return m_HeatPower;
 }

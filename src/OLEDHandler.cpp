@@ -1,12 +1,15 @@
 #include "OLEDHandler.hpp"
 
-OLEDHandler::OLEDHandler(uint8_t& SDA, uint8_t& SCL, const SystemState& sys_state):
+OLEDHandler::OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state):
     m_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
     m_SDA(SDA), m_SCL(SCL),
     m_SystemState(sys_state),
     m_HomeScreen(m_Display),
+    m_EnvScreen(m_Display),
+    m_LightScreen(m_Display),
+    m_PeripheralsScreen(m_Display),
     m_ActiveScreen(0),
-    m_NumScreens(5),
+    m_NumScreens(4),
     m_NextButton(BUTTON_NO, 12, [this]() { SetNextScreen(); }, nullptr),
     m_PreviousButton(BUTTON_NO, 13, [this]() { SetPreviousScreen(); }, nullptr) {}
 
@@ -18,19 +21,31 @@ void OLEDHandler::Init() {
     }
 
     m_Display.clearDisplay();
+
+    m_HomeScreen.Init();
+    m_EnvScreen.Init();
+    m_LightScreen.Init();
 }
 
 void OLEDHandler::UpdateScreen() {
-    m_NextButton.Update();
-    m_PreviousButton.Update();
+    // m_NextButton.Update();
+    // m_PreviousButton.Update();
     
     switch (m_ActiveScreen) {
         case 0:
-            m_HomeScreen.Update();
-            m_HomeScreen.Render();
+            m_HomeScreen.Render(m_SystemState);
             break;
         
         case 1:
+            m_EnvScreen.Render(m_SystemState);
+            break;
+
+        case 2:
+            m_LightScreen.Render(m_SystemState);
+            break;
+
+        case 3:
+            m_PeripheralsScreen.Render(m_SystemState);
             break;
 
         default:

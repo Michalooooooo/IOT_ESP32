@@ -6,34 +6,37 @@ HomeScreen::HomeScreen(Adafruit_SSD1306& display):
 
 void HomeScreen::Init() {
     m_Display.setTextColor(SSD1306_WHITE);
-    m_Display.setTextSize(2);
 }
 
-void HomeScreen::Update() {
-}
-
-void HomeScreen::Render() {
+void HomeScreen::Render(const SystemState& sys_state) {
+    m_Display.clearDisplay();
     
-    m_Display.setCursor(MARGIN, MARGIN);
+    m_Display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
 
-    if(m_WiFiStatus) {
-        m_Display.println("WiFi status: CONNECTED");
-    }else {
-        m_Display.println("WiFi status: DISCONNECTED");
+    // =========================================================================
+    // STATUS WI-FI 
+    // =========================================================================
+    m_Display.setTextSize(1);
+    m_Display.setCursor(6, 6);
+
+    if (sys_state.GetWiFiStatus()) {
+        m_Display.print("WiFi: OK"); 
+    } else {
+        m_Display.print("WiFi: LOST CONN");
     }
 
+    // =========================================================================
+    // ZEGAR 
+    // =========================================================================
+    m_Display.setTextSize(2);
+    m_Display.setCursor(16, 30);
+
+    SysTime current_time = sys_state.GetTime();
+
     m_Display.printf("%02d:%02d:%02d",
-               m_CurrentHour,
-               m_CurrentMinute,
-               m_CurrentSecond);
-}
+               current_time.hour,
+               current_time.minute,
+               current_time.second);
 
-void HomeScreen::SetCurrentTime(uint8_t hour, uint8_t minute, uint8_t second) {
-    m_CurrentHour = hour;
-    m_CurrentMinute = minute;
-    m_CurrentSecond = second;
-}
-
-void HomeScreen::SetWiFiStatus(bool status) {
-    m_WiFiStatus = status;
+    m_Display.display();
 }

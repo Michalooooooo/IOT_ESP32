@@ -6,9 +6,6 @@
 #define BUTTON_NO false
 #define BUTTON_NC true
 
-#define HIGH true
-#define LOW false
-
 class Button {
 public:
     Button(

@@ -5,6 +5,9 @@
 #include "SystemState.hpp"
 #include "screens/Screen.hpp"
 #include "screens/HomeScreen.hpp"
+#include "screens/EnvScreen.hpp"
+#include "screens/LightScreen.hpp"
+#include "screens/PeripheralsScreen.hpp"
 #include "Button.hpp"
 #include <Arduino.h>
 
@@ -13,7 +16,7 @@
 
 class OLEDHandler {
 public:
-    OLEDHandler(uint8_t& SDA, uint8_t& SCL, const SystemState& sys_state);
+    OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state);
 
     void Init();
     void UpdateScreen();  
@@ -25,7 +28,13 @@ private:
     void SetPreviousScreen();
     uint8_t m_SDA, m_SCL;
     const SystemState& m_SystemState;
+    
+    //Screens
     HomeScreen m_HomeScreen;
+    EnvScreen m_EnvScreen;
+    LightScreen m_LightScreen;
+    PeripheralsScreen m_PeripheralsScreen;
+
     uint8_t m_ActiveScreen;
     const uint8_t m_NumScreens;
     Button m_NextButton;
