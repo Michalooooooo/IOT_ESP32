@@ -38,9 +38,9 @@ void Button::Update() {
         m_StableState = m_Active;
 
         if(m_StableState != m_LastStableState) {
-            if(m_StableState == m_NormalState) { 
+            if(m_StableState == m_NormalState && m_OnRelease) { 
                 m_OnRelease();
-            } else {
+            } else if (m_StableState != m_NormalState && m_OnClick){
                 m_OnClick();
             }
             m_LastStableState = m_StableState;
