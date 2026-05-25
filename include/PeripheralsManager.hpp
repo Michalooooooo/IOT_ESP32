@@ -3,17 +3,18 @@
 #include <Arduino.h>
 #include "SystemState.hpp"
 #include <stdint.h>
-
+#include "FuzzyController.hpp"
 
 
 class PeripheralsManager {
 public:
-    PeripheralsManager(const SystemState& sys_state);
+    PeripheralsManager(SystemState& sys_state);
     void Init();
     void Update();
-private:
 
-    const SystemState& m_SystemState;
+private:
+    SystemState& m_SystemState;
+    FuzzyController m_FuzzCtrl;
     const uint8_t m_CIECurve[32] = {
         0,   1,   2,   3,   4,   5,   7,   9,
         12,  15,  18,  22,  27,  32,  38,  44,

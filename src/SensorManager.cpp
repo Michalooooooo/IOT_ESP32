@@ -4,6 +4,8 @@ SensorManager::SensorManager(SystemState& sys_state):
     m_LightSensor(0x23),
     m_SystemState(sys_state) {}
 
+
+// TODO Zrobić Wire.begin raz w setup() //////////////////////////////////////////////////////////////////
 void SensorManager::Init()
 {
     Wire.begin();

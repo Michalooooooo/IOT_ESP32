@@ -29,10 +29,10 @@ public:
     bool GetWiFiStatus() const;
 
     // Peripherals
-    void SetFanPower(float power);
-    void SetLedPower(float power);
-    void SetPumpPower(float power);
-    void SetHeatPower(float power);
+    void SetFanPower(uint8_t power);
+    void SetLedPower(uint8_t power);
+    void SetPumpPower(uint8_t power);
+    void SetHeatPower(uint8_t power);
 
     float GetFanPower() const;
     float GetLedPower() const;
@@ -53,8 +53,8 @@ private:
     bool m_WiFiStatus;
 
     //Peripherals
-    float m_FanPower;   
-    float m_LedPower;   
-    float m_PumpPower;  
-    float m_HeatPower;  
+    uint8_t m_FanPower;   
+    uint8_t m_LedPower;   
+    uint8_t m_PumpPower;  
+    uint8_t m_HeatPower;  
 };

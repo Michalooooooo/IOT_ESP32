@@ -46,19 +46,19 @@ bool SystemState::GetWiFiStatus() const {
     return m_WiFiStatus;
 }
 
-void SystemState::SetFanPower(float power) {
+void SystemState::SetFanPower(uint8_t power) {
     m_FanPower = power;
 }
 
-void SystemState::SetLedPower(float power) {
+void SystemState::SetLedPower(uint8_t power) {
     m_LedPower = power;
 }
 
-void SystemState::SetPumpPower(float power) {
+void SystemState::SetPumpPower(uint8_t power) {
     m_PumpPower = power;
 }
 
-void SystemState::SetHeatPower(float power) {
+void SystemState::SetHeatPower(uint8_t power) {
     m_HeatPower = power;
 }
 

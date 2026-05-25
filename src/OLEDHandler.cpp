@@ -1,5 +1,6 @@
 #include "OLEDHandler.hpp"
 
+// TODO Zrobić Wire.begin raz w setup() //////////////////////////////////////////////////////////////////
 OLEDHandler::OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state):
     m_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
     m_SDA(SDA), m_SCL(SCL),
