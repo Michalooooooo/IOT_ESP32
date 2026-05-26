@@ -14,12 +14,14 @@ void PeripheralsManager::Init() {
 }
 
 void PeripheralsManager::Update() {
-    m_FuzzCtrl.Update();
+    if(m_SystemState.GetWorkMode() == SystemState::WorkMode::AUTO) {
+        m_FuzzCtrl.Update();
 
-    SetOutputPower(Peripherals::FAN);
-    SetOutputPower(Peripherals::LED);
-    SetOutputPower(Peripherals::PUMP);
-    SetOutputPower(Peripherals::HEAT);
+        SetOutputPower(Peripherals::FAN);
+        SetOutputPower(Peripherals::LED);
+        SetOutputPower(Peripherals::PUMP);
+        SetOutputPower(Peripherals::HEAT);
+    }
 }
 
 void PeripheralsManager::SetOutputPower(Peripherals name) {

@@ -39,7 +39,17 @@ public:
     float GetPumpPower() const;
     float GetHeatPower() const;
 
+    enum class WorkMode {
+        NONE = 0,
+        AUTO,
+        MANUAL
+    };
+    
+    WorkMode SetWorkMode(WorkMode wm);
+    WorkMode GetWorkMode() const;
+
 private:
+    WorkMode m_WorkMode;
     // Sensors
     float m_CurrentTemperature;
     float m_CurrentHumidity;

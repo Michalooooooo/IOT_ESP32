@@ -1,15 +1,13 @@
-#include "SensorManager.hpp"
+#include "SensorsManager.hpp"
 
-SensorManager::SensorManager(SystemState& sys_state): 
+SensorsManager::SensorsManager(SystemState& sys_state): 
     m_LightSensor(0x23),
     m_SystemState(sys_state) {}
 
 
 // TODO Zrobić Wire.begin raz w setup() //////////////////////////////////////////////////////////////////
-void SensorManager::Init()
+void SensorsManager::Init()
 {
-    Wire.begin();
-
     // Inicjalizacja sht31
     if (!m_THSensor.begin(0x44)) {
         Serial.println("BLAD: Nie znaleziono czujnika SHT31 pod adresem 0x44!");
@@ -25,7 +23,7 @@ void SensorManager::Init()
     }
 }
 
-void SensorManager::Update() {
+void SensorsManager::Update() {
     float light_intensity = m_LightSensor.getLux();
     m_SystemState.SetIlluminance((uint16_t)light_intensity);
     

@@ -16,7 +16,7 @@
 
 class OLEDHandler {
 public:
-    OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state);
+    OLEDHandler(const SystemState& sys_state);
 
     void Init();
     void UpdateScreen();  
@@ -26,7 +26,6 @@ public:
 private:
     void SetNextScreen();
     void SetPreviousScreen();
-    uint8_t m_SDA, m_SCL;
     const SystemState& m_SystemState;
     
     //Screens

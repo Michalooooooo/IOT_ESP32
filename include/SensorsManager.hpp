@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include "SystemState.hpp"
 
-class SensorManager {
+class SensorsManager {
 public:
-    SensorManager(SystemState& sys_state);
+    SensorsManager(SystemState& sys_state);
     void Init();
     void Update();
 private:

@@ -1,9 +1,8 @@
 #include "OLEDHandler.hpp"
 
 // TODO Zrobić Wire.begin raz w setup() //////////////////////////////////////////////////////////////////
-OLEDHandler::OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state):
+OLEDHandler::OLEDHandler(const SystemState& sys_state):
     m_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
-    m_SDA(SDA), m_SCL(SCL),
     m_SystemState(sys_state),
     m_HomeScreen(m_Display),
     m_EnvScreen(m_Display),
@@ -15,7 +14,6 @@ OLEDHandler::OLEDHandler(uint8_t SDA, uint8_t SCL, const SystemState& sys_state)
     m_PreviousButton(BUTTON_NO, 33, [this]() { SetPreviousScreen(); }, nullptr) {}
 
 void OLEDHandler::Init() {
-    Wire.begin(m_SDA, m_SCL);
 
     if(!m_Display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
         while(true);

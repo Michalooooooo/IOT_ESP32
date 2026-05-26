@@ -3,7 +3,12 @@
 SystemState::SystemState():
     m_CurrentTemperature(0),
     m_CurrentHumidity(0),
-    m_CurrentIlluminance(0) {}
+    m_CurrentIlluminance(0),
+    m_FanPower(0),
+    m_LedPower(0),
+    m_PumpPower(0),
+    m_HeatPower(0),
+    m_WorkMode(WorkMode::AUTO) {}
 
     // Sensors
 void SystemState::SetTemperature(float t) {
@@ -76,4 +81,12 @@ float SystemState::GetPumpPower() const {
 
 float SystemState::GetHeatPower() const {
     return m_HeatPower;
+}
+
+SystemState::WorkMode SystemState::SetWorkMode(WorkMode wm) {
+    m_WorkMode = wm;
+}
+
+SystemState::WorkMode SystemState::GetWorkMode() const {
+    return WorkMode();
 }

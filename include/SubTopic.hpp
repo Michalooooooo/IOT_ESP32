@@ -1,10 +1,11 @@
 #pragma once
 #include <stdint.h>
 #include <Arduino.h>
+#include <functional>
 
 class SubTopic {
 public:
-    SubTopic(char* name, void (*cb)());
+    SubTopic(char* name, std::function<void()> cb);
     void CallFunction() const;
 
     static uint8_t s_TopicID;
@@ -13,5 +14,5 @@ public:
     uint8_t m_ID;
 
 private:
-    void (*m_Function)();
+    std::function<void()> m_Function;
 };
