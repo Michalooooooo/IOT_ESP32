@@ -16,7 +16,7 @@ public:
 
     float GetTemperature() const;
     float GetHumidity() const;
-    int16_t GetIlluminance() const;
+    uint16_t GetIlluminance() const;
 
     // Time
     void SetTime(SysTime time);
@@ -40,12 +40,11 @@ public:
     float GetHeatPower() const;
 
     enum class WorkMode {
-        NONE = 0,
-        AUTO,
+        AUTO = 0,
         MANUAL
     };
     
-    WorkMode SetWorkMode(WorkMode wm);
+    void SetWorkMode(WorkMode wm);
     WorkMode GetWorkMode() const;
 
 private:

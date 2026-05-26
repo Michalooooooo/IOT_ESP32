@@ -45,7 +45,6 @@ private:
     const char* m_MQTTServer;
     
     SystemState& m_SystemState;
-    uint8_t m_Itr;
     const int m_TopicsCount;
     uint32_t m_LastReconnectAttempt;
     WiFiClient m_ESP32Client;

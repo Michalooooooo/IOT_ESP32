@@ -6,7 +6,6 @@ MQTTHandler::MQTTHandler(SystemState& sys_state, const char* ssid, const char* p
     m_SSID(ssid),
     m_Password(password),
     m_MQTTServer(mqtt_server),
-    m_Itr(0),
     m_TopicsCount(sizeof(m_SubTopicsList) / sizeof(m_SubTopicsList[0])),
     m_LastReconnectAttempt(millis())
     {}
@@ -16,9 +15,7 @@ void MQTTHandler::Init() {
     client.setServer(m_MQTTServer, 1883);
     client.setCallback([this](char* topic, byte* payload, unsigned int length) {
         this->HandleTopic(topic, payload, length);
-    }); 
-    
-    
+    });   
 }
 
 void MQTTHandler::SetupWiFi() {
@@ -66,10 +63,10 @@ void MQTTHandler::Publish() {
     }
 
     client.publish("greenhouse/ESP32_1/status/workmode", workmode);
-    client.publish("greenhouse/ESP32_1/status/fan", String(m_SystemState.GetFanPower()).c_str());
-    client.publish("greenhouse/ESP32_1/status/led", String(m_SystemState.GetLedPower()).c_str());
-    client.publish("greenhouse/ESP32_1/status/pump", String(m_SystemState.GetPumpPower()).c_str());
-    client.publish("greenhouse/ESP32_1/status/heat", String(m_SystemState.GetHeatPower()).c_str());
+    client.publish("greenhouse/ESP32_1/status/fan", String((int)m_SystemState.GetFanPower()).c_str());
+    client.publish("greenhouse/ESP32_1/status/led", String((int)m_SystemState.GetLedPower()).c_str());
+    client.publish("greenhouse/ESP32_1/status/pump", String((int)m_SystemState.GetPumpPower()).c_str());
+    client.publish("greenhouse/ESP32_1/status/heat", String((int)m_SystemState.GetHeatPower()).c_str());
     client.publish("greenhouse/ESP32_1/status/temperature", String(m_SystemState.GetTemperature(), 1).c_str());
     client.publish("greenhouse/ESP32_1/status/humidity", String(m_SystemState.GetHumidity(), 1).c_str());
     client.publish("greenhouse/ESP32_1/status/light", String(m_SystemState.GetIlluminance()).c_str());
@@ -81,13 +78,15 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
     char* msg = (char*)payload;
 
     SubTopics topic_id = GetTopicId(topic);
-
+    
     switch (topic_id) {
         case SubTopics::TOPIC_WORKMODE:
-            if(strcmp(msg, "AUTO")) {
+            if(strcmp(msg, "AUTO") == 0) {
                 m_SystemState.SetWorkMode(SystemState::WorkMode::AUTO);
-            } else if(strcmp(msg, "MANUAL")) { 
+            } else if(strcmp(msg, "MANUAL") == 0) { 
                 m_SystemState.SetWorkMode(SystemState::WorkMode::MANUAL);
+            } else {
+                Serial.println("Unknown command, omitting.");
             }
             break;
 
@@ -96,13 +95,15 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
                 uint8_t pwm = static_cast<uint8_t>(atoi(msg));
                 m_SystemState.SetFanPower(pwm);
             }
+            break;
         }
 
         case SubTopics::TOPIC_SET_LED: {
             if(m_SystemState.GetWorkMode() == SystemState::WorkMode::MANUAL) {
                 uint8_t pwm = static_cast<uint8_t>(atoi(msg));
                 m_SystemState.SetLedPower(pwm);
-            }
+           }
+            break;
         }
 
         case SubTopics::TOPIC_SET_PUMP: {
@@ -110,6 +111,7 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
                 uint8_t pwm = static_cast<uint8_t>(atoi(msg));
                 m_SystemState.SetPumpPower(pwm);
             }
+            break;
         }
 
         case SubTopics::TOPIC_SET_HEAT: {
@@ -117,19 +119,18 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
                 uint8_t pwm = static_cast<uint8_t>(atoi(msg));
                 m_SystemState.SetHeatPower(pwm);
             }
-        }
+            break;
+        }  
 
-        
-            
-        
         default:
             break;
     }
 }
 
 void MQTTHandler::SubscribeTopics() {
-    for(size_t i = 0; i < m_Itr; i++) {
+    for(size_t i = 0; i < m_TopicsCount; i++) {
         const char *t = m_SubTopicsList[i];
+        Serial.printf("Subscribes topic: %s \n", t);
         client.subscribe(t);
     }
 }
