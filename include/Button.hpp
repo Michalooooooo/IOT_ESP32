@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdint.h>
 #include <Arduino.h>
 #include <functional>
@@ -18,9 +19,6 @@ public:
     void Update();
 
 private:
-    
-    bool IsPressed();
-    bool IsReleased();
     bool m_RawState;
     bool m_LastRawState;
     bool m_StableState;

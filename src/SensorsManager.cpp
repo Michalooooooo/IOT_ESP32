@@ -34,6 +34,6 @@ void SensorsManager::Update() {
         m_SystemState.SetTemperature(temp);
         m_SystemState.SetHumidity(hum);
     } else {
-        Serial.println("ERROR: zwrócona temperatura lub wilogtność to NaN!");
+        Serial.println("ERROR: SHT31 | Temperature or humidity is NaN!");
     }
 }

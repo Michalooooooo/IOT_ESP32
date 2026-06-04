@@ -1,9 +1,6 @@
 #pragma once
-#include <stdint.h>
-#include "SysTime.hpp"
 
-// To klasa z wszystkimi wartościami w systemie (wartości czujników, status wifi, godzina stan urządzeń itp).
-// Ewentualnie można to podzielić na podklasy
+#include <stdint.h>
 
 class SystemState {
 public:
@@ -18,11 +15,6 @@ public:
     float GetHumidity() const;
     uint16_t GetIlluminance() const;
 
-    // Time
-    void SetTime(SysTime time);
-
-    SysTime GetTime() const;
-
     // WiFi
     void SetWiFiStatus(bool status);
 
@@ -33,6 +25,7 @@ public:
     void SetLedPower(uint8_t power);
     void SetPumpPower(uint8_t power);
     void SetHeatPower(uint8_t power);
+    void ResetPeripherals();
 
     float GetFanPower() const;
     float GetLedPower() const;
@@ -49,14 +42,12 @@ public:
 
 private:
     WorkMode m_WorkMode;
+    
     // Sensors
     float m_CurrentTemperature;
     float m_CurrentHumidity;
     
     uint16_t m_CurrentIlluminance;
-
-    // Time
-    SysTime m_CurrentTime;
 
     // WiFi
     bool m_WiFiStatus;

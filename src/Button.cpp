@@ -27,13 +27,12 @@ Button::Button(
 
 void Button::Update() {
     m_RawState = digitalRead(m_Pin);
-    m_Active = (m_RawState != m_NormalState); // Przycisk wcisniety - 1, przycisk puszczony - 0;
+    m_Active = (m_RawState != m_NormalState); // Button pressed - 1, button released - 0;
 
-    if(m_RawState != m_LastRawState) { // Zacznij odliczanie w momencie gdy wykryjesz zmiane stanu
+    if(m_RawState != m_LastRawState) { 
         m_LastChangeTime = millis();
     }
 
-    // Jesli stan jest stablilny wiecej niz 50ms i ostatni stabilny stan jest inny niż surowy teraz
     if(millis() - m_LastChangeTime >= 50) { 
         m_StableState = m_Active;
 

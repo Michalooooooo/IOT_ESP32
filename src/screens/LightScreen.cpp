@@ -43,7 +43,7 @@ void LightScreen::Render(const SystemState& sys_state) {
     m_Display.setCursor(40, 18);
     m_Display.print(lux); 
     
-    m_Display.setTextSize(2);
+    m_Display.setTextSize(1);
     m_Display.print("lx");
 
 

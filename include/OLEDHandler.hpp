@@ -1,6 +1,8 @@
 #pragma once
+
 #include <stdint.h>
 #include <Adafruit_SSD1306.h>
+#include <Arduino.h>
 #include <Wire.h>
 #include "SystemState.hpp"
 #include "screens/Screen.hpp"
@@ -9,7 +11,6 @@
 #include "screens/LightScreen.hpp"
 #include "screens/PeripheralsScreen.hpp"
 #include "Button.hpp"
-#include <Arduino.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64

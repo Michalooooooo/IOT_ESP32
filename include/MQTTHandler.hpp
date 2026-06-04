@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SubTopic.hpp"
 #include "SystemState.hpp"
 
 #include <WiFi.h>

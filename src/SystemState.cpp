@@ -35,14 +35,6 @@ uint16_t SystemState::GetIlluminance() const {
     return m_CurrentIlluminance;
 }
 
-void SystemState::SetTime(SysTime time) {
-    m_CurrentTime = time;
-}
-
-SysTime SystemState::GetTime() const {
-    return m_CurrentTime;
-}
-
 void SystemState::SetWiFiStatus(bool status) {
     m_WiFiStatus = status;
 }
@@ -65,6 +57,13 @@ void SystemState::SetPumpPower(uint8_t power) {
 
 void SystemState::SetHeatPower(uint8_t power) {
     m_HeatPower = power;
+}
+
+void SystemState::ResetPeripherals() {
+    m_FanPower = 0;
+    m_LedPower = 0;
+    m_PumpPower = 0;
+    m_HeatPower = 0;
 }
 
 float SystemState::GetFanPower() const {

@@ -1,6 +1,5 @@
 #include "OLEDHandler.hpp"
 
-// TODO Zrobić Wire.begin raz w setup() //////////////////////////////////////////////////////////////////
 OLEDHandler::OLEDHandler(const SystemState& sys_state):
     m_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
     m_SystemState(sys_state),
@@ -60,7 +59,8 @@ void OLEDHandler::SetNextScreen() {
     } else {
         m_ActiveScreen++;
     }
-    Serial.printf("Numer wyswietlanego ekranu: %u \n", m_ActiveScreen);
+    
+    Serial.printf("Displayed screen: %u \n", m_ActiveScreen);
 }
 
 void OLEDHandler::SetPreviousScreen() {
@@ -69,5 +69,6 @@ void OLEDHandler::SetPreviousScreen() {
     } else {
         m_ActiveScreen--;
     }
-    Serial.printf("Numer wyswietlanego ekranu: %u \n", m_ActiveScreen);
+    
+    Serial.printf("Displayed screen: %u \n", m_ActiveScreen);
 }

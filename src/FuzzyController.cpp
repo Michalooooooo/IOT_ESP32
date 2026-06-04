@@ -25,7 +25,7 @@ void FuzzyController::Update() {
     m_SystemState.SetLedPower(m_CurrentLed);
 }
 
-// ===================== FUNKCJA PRZYNALEZNOSCI =====================
+// ===================== MEMBERSHIP FUNCTION =====================
 
 float FuzzyController::MfTrap(float x, float a, float b, float c, float d) {
     if (x <= a || x >= d) return 0.0f;
@@ -40,10 +40,10 @@ float FuzzyController::MfTrap(float x, float a, float b, float c, float d) {
     }
 }
 
-// ===== Fuzyfikacja =====
+// ===== FUZIFICATION =====
 
-float FuzzyController::Cold(float t)  { return MfTrap(t, -10.f, -10.f, 14.f, 22.f); } 
-float FuzzyController::Ok(float t)    { return MfTrap(t, 14.f, 18.f, 25.f, 32.f); }
+float FuzzyController::Cold(float t)  { return MfTrap(t, 0.f, 0.f, 14.f, 22.f); } 
+float FuzzyController::Ok(float t)    { return MfTrap(t, 14.f, 20.f, 27.f, 32.f); }
 float FuzzyController::Hot(float t)   { return MfTrap(t, 24.f, 32.f, 50.f, 50.f); }
 
 float FuzzyController::Dry(float h)   { return MfTrap(h, 0.f, 0.f, 40.f, 60.f); }
@@ -60,7 +60,7 @@ float FuzzyController::Weighted(float a, float v, float& num, float& den) {
     return 0;
 }
 
-// ===================== URZADZENIA =====================
+// ===================== DEVICES =====================
 
 void FuzzyController::ComputeFan(float t, float h, float l) {
     float num = 0, den = 0;

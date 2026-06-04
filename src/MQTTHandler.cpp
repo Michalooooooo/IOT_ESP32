@@ -1,4 +1,4 @@
-#include "mqtt/MQTTHandler.hpp"
+#include "MQTTHandler.hpp"
 
 MQTTHandler::MQTTHandler(SystemState& sys_state, const char* ssid, const char* password, const char* mqtt_server):
     m_SystemState(sys_state),
@@ -16,7 +16,6 @@ void MQTTHandler::Init() {
     client.setCallback([this](char* topic, byte* payload, unsigned int length) {
         this->HandleTopic(topic, payload, length);
     });   
-    Serial.println("Zainicjalizowano MQTTHandler!");
 }
 
 void MQTTHandler::SetupWiFi() {
@@ -87,7 +86,10 @@ void MQTTHandler::HandleTopic(char* topic, byte* payload, unsigned int length) {
             if(strcmp(msg, "AUTO") == 0) {
                 m_SystemState.SetWorkMode(SystemState::WorkMode::AUTO);
             } else if(strcmp(msg, "MANUAL") == 0) { 
-                m_SystemState.SetWorkMode(SystemState::WorkMode::MANUAL);
+                if(m_SystemState.GetWorkMode() != SystemState::WorkMode::MANUAL) {
+                    m_SystemState.SetWorkMode(SystemState::WorkMode::MANUAL);
+                    m_SystemState.ResetPeripherals();
+                }
             } else {
                 Serial.println("Unknown command, omitting.");
             }
