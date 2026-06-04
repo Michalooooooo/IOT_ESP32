@@ -11,17 +11,19 @@ void PeripheralsManager::Init() {
     analogWrite(LED_PIN, 0);
     analogWrite(PUMP_PIN, 0);
     analogWrite(HEAT_PIN, 0);
+    Serial.println("Zainicjalizowano PeripheralsManager!");
 }
 
 void PeripheralsManager::Update() {
+    
     if(m_SystemState.GetWorkMode() == SystemState::WorkMode::AUTO) {
         m_FuzzCtrl.Update();
-
-        SetOutputPower(Peripherals::FAN);
-        SetOutputPower(Peripherals::LED);
-        SetOutputPower(Peripherals::PUMP);
-        SetOutputPower(Peripherals::HEAT);
     }
+
+    SetOutputPower(Peripherals::FAN);
+    SetOutputPower(Peripherals::LED);
+    SetOutputPower(Peripherals::PUMP);
+    SetOutputPower(Peripherals::HEAT);
 }
 
 void PeripheralsManager::SetOutputPower(Peripherals name) {
@@ -29,15 +31,14 @@ void PeripheralsManager::SetOutputPower(Peripherals name) {
     switch(name) {
         case Peripherals::FAN: {
             uint8_t fan_speed = m_SystemState.GetFanPower();
-            uint8_t idx = static_cast<uint8_t>(static_cast<float>(fan_speed) / 255.0f) * 31;
+            uint8_t idx = static_cast<uint8_t>((static_cast<float>(fan_speed) / 255.0f) * 31.f);
             uint8_t pwm_value = m_CIECurve[idx];
-
             analogWrite(FAN_PIN, pwm_value);
             break;
         }
         case Peripherals::LED: {
             uint8_t light_intensity = m_SystemState.GetLedPower();
-            uint8_t idx = static_cast<uint8_t>(static_cast<float>(light_intensity) / 255.0f) * 31;
+            uint8_t idx = static_cast<uint8_t>((static_cast<float>(light_intensity) / 255.0f) * 31.f);
             uint8_t pwm_value = m_CIECurve[idx];
 
             analogWrite(LED_PIN, pwm_value);
@@ -45,16 +46,17 @@ void PeripheralsManager::SetOutputPower(Peripherals name) {
         }
         case Peripherals::PUMP: {
             uint8_t pump_power = m_SystemState.GetPumpPower();
-            uint8_t idx = static_cast<uint8_t>(static_cast<float>(pump_power) / 255.0f) * 31;
+            uint8_t idx = static_cast<uint8_t>((static_cast<float>(pump_power) / 255.0f) * 31.f);
             uint8_t pwm_value = m_CIECurve[idx];
 
             analogWrite(PUMP_PIN, pwm_value);
             break;
         }
         case Peripherals::HEAT: {
-            uint8_t heat_power = m_SystemState.GetPumpPower();
-            uint8_t idx = static_cast<uint8_t>(static_cast<float>(heat_power) / 255.0f) * 31;
+            uint8_t heat_power = m_SystemState.GetHeatPower();
+            uint8_t idx = static_cast<uint8_t>((static_cast<float>(heat_power) / 255.0f) * 31.f) ;
             uint8_t pwm_value = m_CIECurve[idx];
+            Serial.printf("heat_power: %u | idx: %u | pwm_value: %u \n", heat_power, idx, pwm_value);
 
             analogWrite(HEAT_PIN, pwm_value);
             break;

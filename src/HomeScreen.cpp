@@ -17,7 +17,7 @@ void HomeScreen::Render(const SystemState& sys_state) {
     // STATUS WI-FI 
     // =========================================================================
     m_Display.setTextSize(1);
-    m_Display.setCursor(6, 6);
+    m_Display.setCursor(5, 5);
 
     if (sys_state.GetWiFiStatus()) {
         m_Display.print("WiFi: OK"); 
@@ -26,17 +26,25 @@ void HomeScreen::Render(const SystemState& sys_state) {
     }
 
     // =========================================================================
-    // ZEGAR 
+    // Tryb pracy 
     // =========================================================================
+    m_Display.setCursor(5, 25);
+    m_Display.print("System workmode: ");
+    m_Display.setCursor(5, 40);
     m_Display.setTextSize(2);
-    m_Display.setCursor(16, 30);
 
-    SysTime current_time = sys_state.GetTime();
+    SystemState::WorkMode wm = sys_state.GetWorkMode();
 
-    m_Display.printf("%02d:%02d:%02d",
-               current_time.hour,
-               current_time.minute,
-               current_time.second);
+    switch(wm) {
+        case SystemState::WorkMode::AUTO:
+            m_Display.print("AUTO");
+            break;
+        case SystemState::WorkMode::MANUAL:
+            m_Display.print("MANUAL");
+            break;
+        default:
+            m_Display.print("ERROR!!!");
+    }
 
     m_Display.display();
 }

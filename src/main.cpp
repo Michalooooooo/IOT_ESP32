@@ -57,9 +57,9 @@ SensorsManager sm(sys_state);
 PeripheralsManager pm(sys_state);
 
 // ========== MQTT configuration ==========
-const char* ssid = "ASUS_5C";
-const char* password = "soda_6735";
-const char* broker = "192.168.50.135";
+const char* ssid = "PLAY Niziolek";
+const char* password = "AD50714MGZT11";
+const char* broker = "192.168.1.184";
 
 MQTTHandler mqtt_h(sys_state, ssid, password, broker);
 
@@ -90,5 +90,6 @@ void loop() {
         pm.Update();
     }
 
-    oh.UpdateScreen();
+    sm.Update();
+    oh.UpdateScreen(); 
 }

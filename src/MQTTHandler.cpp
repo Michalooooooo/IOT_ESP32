@@ -16,6 +16,7 @@ void MQTTHandler::Init() {
     client.setCallback([this](char* topic, byte* payload, unsigned int length) {
         this->HandleTopic(topic, payload, length);
     });   
+    Serial.println("Zainicjalizowano MQTTHandler!");
 }
 
 void MQTTHandler::SetupWiFi() {
@@ -23,10 +24,12 @@ void MQTTHandler::SetupWiFi() {
 
     Serial.print("Connecting . . .");
     while (WiFi.status() != WL_CONNECTED) {
+        m_SystemState.SetWiFiStatus(false);
         delay(500);
         Serial.println("Trying to connect... ");
     }
     Serial.println("\n WiFi connected!");
+    m_SystemState.SetWiFiStatus(true);
 }
 
 void MQTTHandler::MaintainConnection() {

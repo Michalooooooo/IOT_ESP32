@@ -13,10 +13,10 @@ void PeripheralsScreen::Render(const SystemState& sys_state) {
     m_Display.setTextSize(1);
     m_Display.setTextColor(SSD1306_WHITE);
 
-    float fan_power   = sys_state.GetFanPower();
-    float led_power   = sys_state.GetLedPower();
-    float pump_power  = sys_state.GetPumpPower();
-    float heat_power  = sys_state.GetHeatPower();
+    float fan_power   = static_cast<float>(sys_state.GetFanPower()) / 255.f;
+    float led_power   = static_cast<float>(sys_state.GetLedPower()) / 255.f;
+    float pump_power  = static_cast<float>(sys_state.GetPumpPower()) / 255.f;
+    float heat_power  = static_cast<float>(sys_state.GetHeatPower()) / 255.f;
 
     m_Display.drawFastVLine(64, 0, 64, SSD1306_WHITE);  
     m_Display.drawFastHLine(0, 32, 128, SSD1306_WHITE); 

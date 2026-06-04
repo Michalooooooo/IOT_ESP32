@@ -10,8 +10,8 @@ OLEDHandler::OLEDHandler(const SystemState& sys_state):
     m_PeripheralsScreen(m_Display),
     m_ActiveScreen(0),
     m_NumScreens(4),
-    m_NextButton(BUTTON_NO, 32, [this]() { SetNextScreen(); }, nullptr),
-    m_PreviousButton(BUTTON_NO, 33, [this]() { SetPreviousScreen(); }, nullptr) {}
+    m_NextButton(BUTTON_NO, 33, [this]() { SetNextScreen(); }, nullptr),
+    m_PreviousButton(BUTTON_NO, 32, [this]() { SetPreviousScreen(); }, nullptr) {}
 
 void OLEDHandler::Init() {
 
@@ -24,6 +24,7 @@ void OLEDHandler::Init() {
     m_HomeScreen.Init();
     m_EnvScreen.Init();
     m_LightScreen.Init();
+    Serial.println("Zainicjalizowano OLEDHandler!");
 }
 
 void OLEDHandler::UpdateScreen() {
